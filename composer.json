@@ -43,7 +43,9 @@
     "wpackagist-plugin/classic-editor": "^1.4",
     "wpackagist-plugin/wp-custom-admin-login-lite": "^1.0",
     "wpackagist-plugin/google-apps-login": "^3.2",
-    "wpackagist-plugin/wow-login": "^1.0"
+    "wpackagist-plugin/wow-login": "^1.0",
+    "google/apiclient": "^2.2",
+    "wpackagist-plugin/wp-mail-smtp": "^1.4"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.0.2",

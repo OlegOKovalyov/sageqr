@@ -4,130 +4,13 @@
 
 @extends('layouts.sign')
 
-<!-- <meta name="google-signin-client_id" content="919394023436-6ouc3661lhv6u4ea3hntkkhgsguvmj16.apps.googleusercontent.com"> -->
-<meta name="google-signin-client_id" content="919394023436-4l8og8t1c21d73incig318914d64f51v.apps.googleusercontent.com">
-
-<style type="text/css">
-    .for_button {
-        color: #ccc;
-        cursor: pointer;
-        padding:5px;
-        text-align:center;
-        border:1px solid green;
-        border-radius:5px;
-        width:150px;
-    }
-</style>
-
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<script src="https://apis.google.com/js/api.js" async defer></script>
-
-<?php
-$client_id = '919394023436-4l8og8t1c21d73incig318914d64f51v.apps.googleusercontent.com'; // Client ID
-$client_secret = 'evcWY2gbPg8pg6LcBSLVOSRJ'; // Client secret
-// $redirect_uri = 'http://http://test5.local'; // Redirect URI
-//$redirect_uri = 'https://www.nemkorrektur.dk/register'; // Redirect URI
-$redirect_uri = 'https://www.nemkorrektur.dk/'; // Redirect URI
-//$redirect_uri = 'https://www.nemkorrektur.dk/homepage'; // Redirect URI
-
-
-$url = 'https://accounts.google.com/o/oauth2/auth';
-
-$params = array(
-    'redirect_uri'  => $redirect_uri,
-    'response_type' => 'code',
-    'client_id'     => $client_id,
-    'scope'         => 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
-);
-
-
-echo $link = '<p><a href="' . $url . '?' . urldecode(http_build_query($params)) . '">Аутентификация через Google</a></p>';
-// https://accounts.google.com/o/oauth2/auth?redirect_uri=http://localhost/google-auth&response_type=code&client_id=333937315318-fhpi4i6cp36vp43b7tvipaha7qb48j3r.apps.googleusercontent.com&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile
-
-
-if (isset($_GET['code'])) {
-    $result = false;
-
-    $params = array(
-        'client_id'     => $client_id,
-        'client_secret' => $client_secret,
-        'redirect_uri'  => $redirect_uri,
-        'grant_type'    => 'authorization_code',
-        'code'          => $_GET['code']
-    );
-
-    $url = 'https://accounts.google.com/o/oauth2/token';
-
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_POST, 1);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, urldecode(http_build_query($params)));
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-    $result = curl_exec($curl);
-    curl_close($curl);
-    $tokenInfo = json_decode($result, true);
-
-    if (isset($tokenInfo['access_token'])) {
-        $params['access_token'] = $tokenInfo['access_token'];
-
-        $userInfo = json_decode(file_get_contents('https://www.googleapis.com/oauth2/v1/userinfo' . '?' . urldecode(http_build_query($params))), true);
-        if (isset($userInfo['id'])) {
-            $userInfo = $userInfo;
-            $result = true;
-        }
-    }
-}
-    // if ($result) {
-        // echo "Социальный ID пользователя: " . $userInfo['id'] . '<br />';
-        // echo "Имя пользователя: " . $userInfo['name'] . '<br />';
-        // echo "Email: " . $userInfo['email'] . '<br />';
-        // echo "Ссылка на профиль пользователя: " . $userInfo['link'] . '<br />';
-        // echo "Пол пользователя: " . $userInfo['gender'] . '<br />';
-        // echo '<img src="' . $userInfo['picture'] . '" />'; echo "<br />";
-    // }    
-
-
-
-
-// $button = "Button";
-
-
-// if($_POST['param']) {
-//  $param = json_decode($_POST['param']);
-//  $row = get_text($param->id);
-//  echo json_encode($row);
-//  exit();
-// }
-
-
-
-
-// $fn  = $_POST['fn'];
-// $str = $_POST['str'];
-// $file = fopen($fn . ".record","w");
-// echo fwrite($file, $str);
-// fclose($file);
-
-
-if (isset($_GET['u_name']))
-{
-    echo "Значение JavaScript-переменной: ". $_GET['u_name'];
-}
-
-else
-{
-    echo '<script>';
-    // echo 'document.location.href="' . $_SERVER['REQUEST_URI'] . '?u_name=" + userName2';
-    // echo 'document.location.href="http://test5.local/login/' . '?u_name=" + email';
-    echo '</script>';
-    // exit();
-}
-
-
-?>
 
 <?php 
+// Sign In to the site with E-mail and Password
+// if ( is_user_logged_in() ) {
+//     wp_redirect( site_url('/') );
+//     exit;
+// }
 
 if($_POST) 
 { 
@@ -158,11 +41,124 @@ if($_POST)
     exit(); 
     } 
 
-} else {  
+    } else {  
+
+    }
+
+?>
+
+
+<?php
+// Sign In with Google to the site
+global $wpdb, $PasswordHash, $current_user, $user_ID;
+
+//Step 1: Enter you google account credentials
+$g_client = new Google_Client();
+$g_client->setClientId("919394023436-is2qbur2uetd0eobultdhi4bvd3h4roq.apps.googleusercontent.com");
+$g_client->setClientSecret("mE7LIQKGFzAgps-JxMjuwD3z");
+// $g_client->setRedirectUri("https://testok2.dev-test.pro/login");
+$g_client->setRedirectUri("https://test5.local/login");
+// $g_client->setRedirectUri("https://www.nemkorrektur.dk/login");
+$g_client->setIncludeGrantedScopes(true);
+
+$g_client->addScope("https://www.googleapis.com/auth/userinfo.profile");
+$g_client->setScopes("email");
+
+//Step 2 : Create the url
+$auth_url = $g_client->createAuthUrl();
+$output = "<a href='$auth_url'><img src='/app/themes/sageqr/dist/images/btn_google_signin_light_normal_web.png' alt=''/></a>";
+
+//Step 3 : Get the authorization  code
+$code = isset($_GET['code']) ? $_GET['code'] : NULL;
+
+
+//Step 4: Get access token
+if(isset($code)) {
+    try {
+        $token = $g_client->fetchAccessTokenWithAuthCode($code);
+        $g_client->setAccessToken($token);
+    }catch (Exception $e){
+        echo $e->getMessage();
+    }
+    try {
+        $pay_load = $g_client->verifyIdToken();
+    }catch (Exception $e) {
+        echo $e->getMessage();
+    }
+} else{
+    $pay_load = null;
+}
+
+if(isset($pay_load)){
+
+    $guser_email = $pay_load["email"];
+    $guser_gn = $pay_load["given_name"];
+    $guser_fn = $pay_load["family_name"];
+
+    $glogin_data = array(); 
+    $glogin_data['user_login'] = $guser_email; 
+    $glogin_data['user_password'] = 'eYkEVu7zyHR7pT4G';
+
+    if ( is_user_logged_in() ) {
+        echo 'Вы авторизованы на сайте!';
+    }
+    else {
+
+        if ( email_exists($guser_email) ) {
+
+            $guser_verify = wp_signon( $glogin_data, false ); 
+
+            if ( is_wp_error($guser_verify) ) 
+            { 
+                echo '<span class="mine">Invlaid Login Details</span>'; 
+            } else { 
+                echo "<script type='text/javascript'>window.location.href='". home_url() ."'</script>"; 
+                exit(); 
+            } 
+        }
+
+        else {
+
+            $guser_data = array(
+                'ID'              => 0,  // когда нужно обновить пользователя
+                'user_pass'       => 'eYkEVu7zyHR7pT4G', // обязательно
+                'user_login'      => $guser_email, // обязательно
+                'user_nicename'   => '',
+                'user_url'        => '',
+                'user_email'      => $guser_email,
+                'display_name'    => '',
+                'nickname'        => '',
+                'first_name'      => $guser_gn,
+                'last_name'       => $guser_fn,
+                'description'     => '',
+                'rich_editing'    => 'true', // false - выключить визуальный редактор
+                'user_registered' => '', // дата регистрации (Y-m-d H:i:s) в GMT
+                'role'            => 'subscriber', // (строка) роль пользователя
+                'jabber'          => '',
+                'aim'             => '',
+                'yim'             => '',
+            );
+
+            wp_insert_user( $guser_data );
+
+            $guser_verify = wp_signon( $glogin_data, false ); 
+
+            if ( is_wp_error($guser_verify) ) 
+            { 
+                echo '<span class="mine">Invlaid Login Details</span>'; 
+            } else { 
+                echo "<script type='text/javascript'>window.location.href='". home_url() ."'</script>"; 
+                exit(); 
+            } 
+        }
+     
+    }    
 
 }
 
 ?>
+
+
 
 <div class="btn-wrap"></div>
 
@@ -201,7 +197,10 @@ if($_POST)
                 <p>Or login with</p>
             </div>
             <div id="my-signin2"></div>
-            <a class="small" href="#" onclick="signOut();">Sign out</a>
+            <div class="form-group">
+                <!-- Display login button / Google profile information -->
+                <?php echo $output; ?>
+            </div>
             <div class="login-txt">
                 <p class="forgot-psw mb-1">Forgot your password ?</p>
                 <p class="smaller-txt">no worries, click <a href="{{ home_url() }}">here</a> to reset your password.</p>
@@ -212,101 +211,3 @@ if($_POST)
         </div>
     </div>
 </form>
-
-
-<script>
-    // var button = "<?php //echo $button; ?>";
-    // alert("button");
-    // jQuery(".btn-wrap").prepend("<p class='for_button'>" + button + "</p>");
-
-</script>
-
-
-<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-<!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
-<!-- <script src="https://apis.google.com/js/api.js" async defer></script> -->
-
-
-<script>
-      function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
-
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-      }
-    </script>
-
-
-
-<script>
-    function onSuccess(googleUser) {
-      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-        // alert("hello");
-        onSignIn(googleUser);
-        window.onLoadCallback = function(){
-            if (auth2.isSignedIn.get()) {
-              var profile = auth2.currentUser.get().getBasicProfile();
-              console.log('ID: ' + profile.getId());
-              console.log('Full Name: ' + profile.getName());
-              console.log('Given Name: ' + profile.getGivenName());
-              console.log('Family Name: ' + profile.getFamilyName());
-              console.log('Image URL: ' + profile.getImageUrl());
-              console.log('Email: ' + profile.getEmail());
-            }
-        }
-    }
-    function onFailure(error) {
-      console.log(error);
-    }
-    function renderButton() {
-      gapi.signin2.render('my-signin2', {
-        'scope': 'profile email',
-        'width': 175,
-        'height': 40,
-        'longtitle': true,
-        'theme': 'dark',
-        'onsuccess': onSuccess,
-        'onfailure': onFailure
-      });
-    }
-
-function onSignIn2(googleUser) {
-  var id_token = googleUser.getAuthResponse().id_token;
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://test5.local/tokensignin');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-      console.log('Signed in as: ' + xhr.responseText);
-    };
-    xhr.send('idtoken=' + id_token);
-
-
-    var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-
-}
-</script>
-
-<script>
-  function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-</script>
-
-<script>
-
-</script>

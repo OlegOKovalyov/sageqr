@@ -1,0 +1,162 @@
+/* Front Page Template */
+body {
+  height: 100%;
+}
+
+.dashboard-main-wrapper {
+  background-color: rgb(240, 240, 240);
+}
+
+.dashboard-header {
+  .navbar {
+    background-color: #2b3643 !important;
+    border-bottom: 0;
+    min-height: 45px;
+  }
+}
+
+.navbar-right-top .nav-item .nav-link {
+  font-size: 0.9rem;
+  padding: 0 1rem;
+}
+
+.nav-left-sidebar.sidebar-dark {
+  background-color: #364150;
+  top: 45px;
+
+  .navbar {
+    padding: 0;
+  }
+
+  .navbar-nav {
+    padding: 0;
+
+    a.nav-link {
+      color: #fff;
+    }
+  }
+
+  .add-new {
+    background-color: #d4565c;
+  }
+}
+
+/* My Profile Page */
+.template-my-profile {
+  .row-wrap {
+    border: 1px solid #26a69a;
+
+    .form-header {
+      background-color: #26a69a;
+      // margin-left: -10px;
+      // margin-right: -10px;
+      padding: 0 10px;
+
+      .form-header__title {
+        color: #fff;
+        font-size: 17px;
+        padding: 11px 0 9px 0;
+
+        .svg-inline--fa {
+          margin-right: 5px;
+          // margin-left: 9px;
+        }
+      }
+    }
+
+    form {
+      background-color: #fff;
+    }
+
+    form .form-body {
+      font-size: 14px;
+      // margin: 20px 0;
+      padding: 20px 10px;
+      width: 100%;
+
+      .form-group.row {
+        padding-bottom: 0;
+        // margin-bottom: 15px;
+
+        .email-notif {
+          font-size: 13px;
+          font-weight: 400;
+          text-align: right;
+        }
+      }
+
+      .col-form-label {
+        text-align: right;
+
+        .required {
+          color: #e02222;
+          font-size: 12px;
+          padding-left: 2px;
+        }
+      }
+
+      .form-control {
+        padding: 6px 12px;
+      }
+    }
+
+    .form-actions {
+      padding: 20px 10px;
+      margin: 0;
+      background-color: #f5f5f5;
+      border-top: 1px solid #e5e5e5;
+
+      .form-group {
+        // justify-content: flex-end;
+        width: 100%;
+      }
+    }
+
+    .personal-info {
+      width: 100%;
+
+      .personal-info__title {
+        background-color: #26a69a;
+        padding: 0 10px;
+
+        .personal-info__title-caption {
+          color: #fff;
+          padding: 11px 0 9px 0;
+        }
+      }
+    }
+  }
+}
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 0;
+}
+
+.green {
+  color: #fff;
+  background-color: #26a69a;
+}
+
+.alert {
+  border-radius: 0;
+  font-size: 13px;
+  line-height: 1;
+}

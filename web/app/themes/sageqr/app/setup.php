@@ -143,3 +143,13 @@ add_action('wp_logout', function() {
   wp_redirect( site_url('login') );
   exit();
 });
+
+
+/**
+ * Sets the display status of the admin bar to 'off' for Subscribers users
+ */
+if ( ! current_user_can( 'manage_options' ) ) {
+    show_admin_bar( false );
+}
+
+show_admin_bar( false ); // Временно
