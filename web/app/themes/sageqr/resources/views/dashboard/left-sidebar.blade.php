@@ -46,8 +46,22 @@
                             </li>
 
 
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ home_url('/my-documents/')}}"><i class="fas fa-home"> </i> My Documents</a>
+                                <!-- <div id="submenu-10" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">File</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Folder</a>
+                                        </li>                                        
+                                    </ul>
+                                </div> -->
+                            </li>                            
+
                             <li class="nav-item ">
-                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
                                 <div id="submenu-1" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">

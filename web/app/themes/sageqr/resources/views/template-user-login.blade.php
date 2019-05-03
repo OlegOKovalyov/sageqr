@@ -120,7 +120,7 @@ if(isset($pay_load)){
         else {
 
             $guser_data = array(
-                'ID'              => 0,  // когда нужно обновить пользователя
+                'ID'              => 0,  // когда нужно обновить пользователя 0
                 'user_pass'       => 'eYkEVu7zyHR7pT4G', // обязательно
                 'user_login'      => $guser_email, // обязательно
                 'user_nicename'   => '',
@@ -155,10 +155,7 @@ if(isset($pay_load)){
     }    
 
 }
-
 ?>
-
-
 
 <div class="btn-wrap"></div>
 
@@ -203,7 +200,7 @@ if(isset($pay_load)){
             </div>
             <div class="login-txt">
                 <p class="forgot-psw mb-1">Forgot your password ?</p>
-                <p class="smaller-txt">no worries, click <a href="{{ home_url() }}">here</a> to reset your password.</p>
+                <p class="smaller-txt">no worries, click <a href="{{ home_url('/lost-password/') }}">here</a> to reset your password.</p>
             </div>
             <div class="login-txt create-account">
                 <p class="smaller-txt">Don't have an account yet ?  Register a new membership <a href="/register/'">Create an account</a> </p>

@@ -6,7 +6,8 @@
 }
 
 .template-user-login,
-.template-user-register {
+.template-user-register,
+.template-user-lost-password {
   background: url("../images/initbg.jpg") no-repeat;
   background-size: cover;
   font-family: "Open sans", sans-serif;
@@ -35,6 +36,10 @@
           font-weight: 300;
           margin-top: 20px;
           margin-bottom: 10px;
+        }
+
+        p.after-header {
+          font-size: 13px;
         }
       }
 
@@ -99,7 +104,8 @@
   font-size: 14px;
   border: none;
   border-radius: 0;
-  height: 34px;
+  height: auto;
+  line-height: 1.5;
   padding: 6px 12px;
   margin-bottom: 0;
   width: 100%;
@@ -155,5 +161,12 @@
   &::after {
     content: "";
     background-image: url("../images/igoogle.svg");
+  }
+}
+
+/* User Lost Password Page */
+.template-user-lost-password {
+  .form-actions {
+    margin-top: 1rem;
   }
 }

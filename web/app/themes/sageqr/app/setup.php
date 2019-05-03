@@ -144,7 +144,6 @@ add_action('wp_logout', function() {
   exit();
 });
 
-
 /**
  * Sets the display status of the admin bar to 'off' for Subscribers users
  */

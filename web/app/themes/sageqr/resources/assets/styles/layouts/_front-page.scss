@@ -1,10 +1,24 @@
 /* Front Page Template */
 body {
-  height: 100%;
+  font-family: "Open Sans", sans-serif !important;
+  color: #333;
+  height: 90%;
+}
+
+.page-title {
+  .container {
+    margin-left: 260px;
+  }
 }
 
 .dashboard-main-wrapper {
   background-color: rgb(240, 240, 240);
+  padding-top: 30px;
+
+  h4 {
+    font-size: 17px;
+    font-weight: 700;
+  }
 }
 
 .dashboard-header {
@@ -15,9 +29,16 @@ body {
   }
 }
 
-.navbar-right-top .nav-item .nav-link {
-  font-size: 0.9rem;
-  padding: 0 1rem;
+.navbar-nav .nav-item {
+  a.nav-link {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .nav-link svg {
+    font-size: 0.9rem;
+    margin: 0 1rem;
+  }
 }
 
 .nav-left-sidebar.sidebar-dark {
@@ -159,4 +180,25 @@ body {
   border-radius: 0;
   font-size: 13px;
   line-height: 1;
+}
+
+/* My Document Page Template */
+.template-my-documents {
+  .card-figure {
+    padding: 0;
+
+    .figure {
+      .figure-attachment {
+        a {
+          height: 200px;
+          width: 100%;
+
+          img.current {
+            height: 200px;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
 }

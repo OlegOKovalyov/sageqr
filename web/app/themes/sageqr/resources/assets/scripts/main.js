@@ -34,13 +34,14 @@ jQuery(document).ready(() => routes.loadEvents());
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
 // import the Facebook and Twitter icons
 import { faFont, faEnvelope, faLock, faCheck, faUser, faPowerOff, faKey, faAngleDown,
-	faPlus } from '@fortawesome/free-solid-svg-icons';
+	faPlus, faHome, faDownload, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { faArrowAltCircleLeft, faArrowAltCircleRight } from '@fortawesome/free-regular-svg-icons';
 import { faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 // add the imported icons to the library
 library.add(faFacebook, faTwitter, faFont, faEnvelope, faLock, faCheck, faArrowAltCircleLeft, 
-	faArrowAltCircleRight, faUser, faPowerOff, faKey, faAngleDown, faPlus );
+	faArrowAltCircleRight, faUser, faPowerOff, faKey, faAngleDown, faPlus, faHome, faDownload, 
+	faFileImage );
 
 // tell FontAwesome to watch the DOM and add the SVGs when it detects icon markup
 dom.watch();

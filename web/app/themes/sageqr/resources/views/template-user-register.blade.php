@@ -55,7 +55,7 @@ if(isset($_POST['task']) && $_POST['task'] == 'register' ) {
     <div class="card bg-transparent border-0 shadow-none">
         <div class="card-header">
             <h3 class="form-title">Sign Up</h3>
-            <p>Enter your personal details below: </p>
+            <p class="after-header">Enter your personal details below: </p>
         </div>
         <div class="alert-msg"><p><?php if($success != "") { ?> 
             <div class="alert alert-success" role="alert">
