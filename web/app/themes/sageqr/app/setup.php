@@ -152,3 +152,12 @@ if ( ! current_user_can( 'manage_options' ) ) {
 }
 
 show_admin_bar( false ); // Временно
+
+/**
+ *  If you were using this code within a template, you could be assured that init had already been called.
+ */
+// add_action('init', 'get_your_current_user_id');
+// function get_your_current_user_id(){
+//         $your_current_user_id = get_current_user_id();
+//         $_SESSION['your_current_user_id'] =  $your_current_user_id;
+// }

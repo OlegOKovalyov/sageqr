@@ -34,7 +34,11 @@ if(isset($_POST['task']) && $_POST['task'] == 'register' ) {
             $error = 'Error on user creation.';
         } else {
             do_action('user_register', $user_id);
-            
+            if ( ! wp_mkdir_p( get_template_directory() . "/UserDir/" . $user_id ) ) {
+                echo "Не удалось создать каталог " . get_template_directory() . '/UserDir/' . $user_id;
+            }
+
+            echo "Удалось создать каталог: " . get_template_directory() . "/UserDir/" . $user_id;
             $success = 'You\'re successfully registered';
         }
     }
