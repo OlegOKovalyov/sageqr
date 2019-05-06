@@ -36,7 +36,11 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#"><i class="fas fa-folder-plus"></i> Folder</a>
+                                            <!-- <a class="nav-link" href="#"><i class="fas fa-folder-plus"></i> Folder</a> -->
+                                            <!-- Button trigger modal -->
+                                            <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">
+                                                <i class="fas fa-folder-plus"></i> Folder
+                                            </a>
                                         </li>  
 <!--                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-11" aria-controls="submenu-11">Level 2</a>
@@ -352,4 +356,5 @@
         <!-- ============================================================== -->
         <!-- end left sidebar -->
         <!-- ============================================================== -->
-        
+
+

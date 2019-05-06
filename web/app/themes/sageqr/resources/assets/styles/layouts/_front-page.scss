@@ -60,11 +60,20 @@ body {
 
     a.add-new {
       color: #fff;
+
+      &:focus {
+        background-color: #d4565c;
+      }
     }
   }
 
   .add-new {
     background-color: #d4565c;
+  }
+
+  .modal-dialog {
+    margin: 15% auto;
+    max-width: 320px;
   }
 }
 

@@ -42,6 +42,10 @@ for ($i=0; $i < count($usr_entries) - 2 ; $i++) {
     }
 }
 
+// wp_mkdir_p( 'UserDir/testdir' );
+// mkdir( 'UserDir/testdir2', 0777 );
+// wp_mkdir_p( $usr_upload_dir . '/testdir' );
+
 ?>
 
 @section('content')
@@ -73,6 +77,7 @@ for ($i=0; $i < count($usr_entries) - 2 ; $i++) {
                     <?php 
                         // echo '<a href="#">' . $usr_dirs[$i]. '</a>';
                         echo $usr_dirs[$i];
+                        // wp_mkdir_p( 'UserDir/testdir' );
                     ?>
                 </span>
             </div>
@@ -127,5 +132,94 @@ for ($i=0; $i < count($usr_entries) - 2 ; $i++) {
 <!-- ============================================================== -->
 <!-- main wrapper -->
 <!-- ============================================================== -->
+
+
+
+<?php
+//для начала опишем функцию очистки данных от лишних пробелов и тегов
+function clstr($data){
+ return trim(strip_tags($data));
+}
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+//если метод обращения совпадает, то обрабатываем данные из массива $_POST
+if($_SERVER['REQUEST_METHOD']=='POST'){
+    // $folder = clstr($_POST['folder']);
+    $folder = test_input($_POST['folder']);
+
+    if (!is_file($folder) && !is_dir($folder)) {
+        wp_mkdir_p( $usr_upload_dir . '/' . $_POST['folder'] );
+        wp_redirect( home_url() . '/my-documents/' );
+        //mkdir($dir); //create the directory
+        //chmod($targetfilename, 0777); //make it writable
+        //wp_redirect( home_url() . '/my-documents/' );
+    }
+    else
+    {
+        echo "{$folder} exists and is a valid folder";
+    }
+
+    
+    // $phone = clstr($_POST['phone']);
+    // $msg = clstr($_POST['message']);
+        //проверим наши переменные на пустоту
+        // if(!empty($name)&&!empty($phone)&&!empty($msg)){
+        //     $to='poluchatel@mail.ru';
+        //     $sub='Письмо с сайта';
+        //     $text='Имя - '.$name.' Телефон - '.' Сообщение: '.$msg;
+        //     //в переменную положим результат от функции mail false или true
+        //     $status=mail($to, $sub, $text); 
+        //     //положим результат в куки с временем хранения 10 сек
+        //     setcookie('status_mail', $status, time()+10);
+        //     header('Location:'.$_SERVER['REQUEST_URI']); 
+        // }
+}
+// if($_COOKIE['status_mail']==true){
+// echo "Сообщение отправлено";
+// }
+?>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <!-- <form action="<?php //get_template_directory() . 'inc/create_dir.php' ?>" method="post"> -->
+    <!-- <form action="<?php //wp_mkdir_p( $usr_upload_dir . '/' . $_POST['folder'] ); ?>" method="post"> --><!-- WORKING!!! -->
+    <!-- <form action="<?php //mkdir("testdir", 0777); ?>" method="post"> -->
+    <!-- <form action="<?php //echo "hello" ?>" method="post"> -->
+    <form action="<?= $_SERVER['REQUEST_URI'];?>" method="post">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New Folder</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+
+
+
+    <!-- <form action="inc/create_dir.php" method="post"> -->
+                <input type="text" name="folder" value="Untitle Folder"><br>
+    <!-- <input type="submit"> -->
+    <!-- </form>     -->
+
+            <!-- <input type="text" name="folder" value="Untitle Folder"> -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create</button>
+          </div>
+        </div>
+    </form>
+  </div>
+</div>
 
 @endsection
