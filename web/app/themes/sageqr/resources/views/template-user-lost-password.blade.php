@@ -4,6 +4,12 @@
 
 @extends('layouts.sign')
 
+@section('content')
+  {{--@while(have_posts())
+    {!! the_post() !!}
+    @include('partials/content-single')
+  @endwhile --}}
+
 <?php
 global $wpdb;
 
@@ -121,6 +127,9 @@ if(isset($_GET['key']) && $_GET['action'] == "reset_pwd") {
 		</div>
 	</div>	
 </form>
+<!-- ============================================================== -->
+<!-- forgot password form  -->
+<!-- ============================================================== -->
 
 <?php 
 /**
@@ -197,3 +206,5 @@ function tg_validate_url() {
     return $page_url.$concate;
 }
 ?>
+
+@endsection

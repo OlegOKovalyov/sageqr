@@ -4,5 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="google-site-verification" content="S7xVoLpEL0emYPg2QbslbwIkaVhO_htbuMW2OstdNfc" />
   <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+  <script src='https://www.google.com/recaptcha/api.js' async defer />
   @php wp_head() @endphp
 </head>

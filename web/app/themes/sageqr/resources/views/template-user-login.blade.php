@@ -4,6 +4,12 @@
 
 @extends('layouts.sign')
 
+@section('content')
+  {{--@while(have_posts())
+    {!! the_post() !!}
+    @include('partials/content-single')
+  @endwhile --}}
+
 
 <?php 
 // Sign In to the site with E-mail and Password
@@ -12,10 +18,11 @@
 //     exit;
 // }
 
+$success = '';
+$error = '';
+
 if($_POST) 
 { 
-    $success = '';
-    $error = '';
     global $wpdb; 
 
     //We shall SQL esc_like all inputs 
@@ -35,8 +42,11 @@ if($_POST)
 
     if ( is_wp_error($user_verify) ) 
     { 
-        echo '<span class="mine">Invlaid Login Details</span>'; 
+        // echo '<span class="mine">Invlaid Login Details</span>';
+        $error = 'Invlaid Login Details.';
+
     } else { 
+        $success = 'You are successfully logged in!';
         echo "<script type='text/javascript'>window.location.href='". home_url() ."'</script>"; 
     exit(); 
     } 
@@ -166,13 +176,23 @@ if(isset($pay_load)){
 </div>
 
 <!-- ============================================================== -->
-<!-- signup form  -->
+<!-- signin form  -->
 <!-- ============================================================== -->
 <form class="splash-container" method="post">
     <div class="card bg-transparent border-0 shadow-none mb-3">
         <div class="card-header">
             <h3 class="form-title">Login to your account</h3>
         </div>
+        <div class="alert-msg"><p><?php if($success != "") { ?> 
+            <div class="alert alert-success" role="alert">
+              {{ $success }}
+            </div>
+            <?php } if($error!= "") { ?>
+                <div class="alert alert-danger" role="alert">
+                  {{ $error }}
+                </div> 
+            <?php } ?></p>
+        </div>        
         <div class="card-body">
             <div class="form-group">
             	<div class="input-icon">
@@ -208,3 +228,7 @@ if(isset($pay_load)){
         </div>
     </div>
 </form>
+<!-- ============================================================== -->
+<!-- signin form  -->
+<!-- ============================================================== -->
+@endsection

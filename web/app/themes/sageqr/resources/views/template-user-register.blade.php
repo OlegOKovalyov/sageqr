@@ -4,6 +4,12 @@
 
 @extends('layouts.sign')
 
+@section('content')
+  {{--@while(have_posts())
+    {!! the_post() !!}
+    @include('partials/content-single')
+  @endwhile --}}
+
 <?php 
 $success = '';
 $error = '';
@@ -125,4 +131,6 @@ if(isset($_POST['task']) && $_POST['task'] == 'register' ) {
     </div>
 </form>
 
-<script src='https://www.google.com/recaptcha/api.js' async defer >
+@endsection  
+
+<!-- <script src='https://www.google.com/recaptcha/api.js' async defer > -->

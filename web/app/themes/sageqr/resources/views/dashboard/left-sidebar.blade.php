@@ -16,15 +16,28 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link add-new" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-10" aria-controls="submenu-10"><i class="fas fa-plus"> </i> Add New</a>
+                                <a class="nav-link add-new" href="" data-toggle="collapse" aria-expanded="false" data-target="#submenu-10" aria-controls="submenu-10"><i class="fas fa-plus"> </i> Add New</a>
                                 <div id="submenu-10" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">File</a>
+                                        <li class="nav-item fileinput-button">
+                                            <!-- <a class="nav-link" href="/my-documents/">File</a> -->
                                         </li>
+
+                                        <li class="nav-item fileinput-button">
+                                            <form id="upload-form" action="<?php echo get_template_directory_uri() ?>/views/inc/process_upload.php" method="post" enctype="multipart/form-data">
+                                                <!-- <input type="file" name="profilepicture" size="25" /> -->
+                                                <label class="nav-link">
+                                                    <i class="fas fa-cloud-upload-alt"></i> File<input id="file" type="file" style="display: none;" name="profilepicture" onchange="form.submit()" />
+                                                </label>
+                                                <input type="hidden" name="user_id" value='<?php echo $user_ID; ?>'>
+                                                <input type="hidden" name="usr_upload_dir" value='<?php echo $usr_upload_dir; ?>'>
+                                                <!-- <input class="nav-link" id="fupload" type="submit" name="submit" value="Submit" /> -->
+                                            </form>                                            
+                                        </li>
+
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">Folder</a>
-                                        </li>                                        
+                                            <a class="nav-link" href="#"><i class="fas fa-folder-plus"></i> Folder</a>
+                                        </li>  
 <!--                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-11" aria-controls="submenu-11">Level 2</a>
                                             <div id="submenu-11" class="collapse submenu" style="">
@@ -339,3 +352,4 @@
         <!-- ============================================================== -->
         <!-- end left sidebar -->
         <!-- ============================================================== -->
+        
