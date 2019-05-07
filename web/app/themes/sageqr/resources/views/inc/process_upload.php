@@ -2,37 +2,13 @@
 // global $user_ID; echo $user_ID;
 $user_ID = $_POST['user_id'];
 $usr_upload_dir = $_POST['usr_upload_dir'];
- echo "hello"; echo $user_ID; echo "$usr_upload_dir";
-// global $post, $user;
-// $cur_user_id = $user->ID; echo "$cur_user_id";
- echo "hello2";
-//  $current_user = wp_get_current_user();
-// if( $current_user->ID ){
-//     echo "Авторизован.";
-// }
-// else {
-//     echo "Не авторизован.";
-// }
-/*$cur_user_id = get_current_user_id();*/ echo "hello3";
-// echo $cur_user_id; die;
-
-
-// $current_user = get_current_user_id(); echo "hello4"; die;
-// $current_user_id = $current_user->ID;
-// $theme_root = dirname(__FILE__). '/../../../../../../wp/wp-load.php';
 
 // WordPress environment 
 require_once( dirname(__FILE__) . '/../../../../../../wp/wp-load.php' );
- 
-// $wordpress_upload_dir = wp_upload_dir(); echo $wordpress_upload_dir;
-//$wordpress_upload_dir = get_template_directory() . '/UserDir/' . $$current_user_id; echo $wordpress_upload_dir;
 
-// $wordpress_upload_dir['path'] is the full server path to wp-content/uploads/2017/05, for multisite works good as well
-// $wordpress_upload_dir['url'] the absolute URL to the same folder, actually we do not need it, just to show the link to file
 $i = 1; // number of tries when the file with the same name is already exists
  
 $profilepicture = $_FILES['profilepicture']; print_r($profilepicture);
-// $new_file_path = $wordpress_upload_dir['path'] . '/' . $profilepicture['name'];
 $new_file_path = $usr_upload_dir . '/' . $profilepicture['name'];
 $new_file_mime = mime_content_type( $profilepicture['tmp_name'] );
  
@@ -55,25 +31,7 @@ while( file_exists( $new_file_path ) ) {
  
 // looks like everything is OK
 if( move_uploaded_file( $profilepicture['tmp_name'], $new_file_path ) ) {
- 
- 
-    // $upload_id = wp_insert_attachment( array(
-    //     'guid'           => $new_file_path, 
-    //     'post_mime_type' => $new_file_mime,
-    //     // 'post_title'     => preg_replace( '/\.[^.]+$/', '', $profilepicture['name'] ),
-    //     'post_title'     => 'My documents',
-    //     'post_content'   => '',
-    //     'post_status'    => 'inherit'
-    // ), $new_file_path );
- 
-    // wp_generate_attachment_metadata() won't work if you do not include this file
-    // require_once( ABSPATH . 'wp-admin/includes/image.php' );
- 
-    // Generate and save the attachment metas into the database
-    // wp_update_attachment_metadata( $upload_id, wp_generate_attachment_metadata( $upload_id, $new_file_path ) );
- 
-    // Show the uploaded file in browser
-    // wp_redirect( $wordpress_upload_dir['url'] . '/' . basename( $new_file_path ) );
+
     wp_redirect( home_url() . '/my-documents/' );
  
 } 

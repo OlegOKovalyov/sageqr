@@ -18,10 +18,10 @@ add_action('wp_enqueue_scripts', function () {
         wp_enqueue_script('comment-reply');
     }
 
-    wp_localize_script( 'twentyfifteen-script', 'myajax', array(
-            'url' => admin_url('admin-ajax.php')
-        )
-    );
+    // wp_localize_script( 'sage-ajax-script', 'myajax', array(
+    //         'url' => admin_url('admin-ajax.php')
+    //     )
+    // );
 
 }, 100);
 

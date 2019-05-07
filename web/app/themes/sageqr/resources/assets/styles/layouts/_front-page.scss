@@ -199,6 +199,23 @@ body {
 
 /* My Document Page Template */
 .template-my-documents {
+  .page-bar {
+    background-color: #f7f7f7;
+
+    .page-bar-table {
+      width: 100%;
+
+      .fileaction_icon {
+        display: flex;
+        justify-content: space-around;
+      }
+    }
+  }
+
+  .contentdata {
+    padding: 20px 0;
+  }
+
   .created_folder {
     .folder-bar {
       .folder_info_wrapper {
@@ -238,6 +255,23 @@ body {
           img.current {
             height: 200px;
             width: 100%;
+          }
+        }
+      }
+
+      .figure-caption {
+        padding: 5px;
+        height: 20%;
+      }
+
+      &.active {
+        border: 1px solid rgb(28, 175, 154);
+
+        .figure-caption {
+          background-color: rgb(28, 175, 154);
+
+          li {
+            color: #fff;
           }
         }
       }
