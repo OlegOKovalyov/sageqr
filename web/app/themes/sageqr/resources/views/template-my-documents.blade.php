@@ -5,6 +5,7 @@
 @extends('layouts.docs')
 
 <?php
+require($_SERVER["DOCUMENT_ROOT"]."wp/wp-load.php"); //echo $_SERVER["DOCUMENT_ROOT"]."wp/wp-load.php";
 //echo "Hello!";
 global $user_ID; //echo $user_ID;
  
@@ -24,13 +25,33 @@ $current_user = wp_get_current_user();
 $current_user_id = $current_user->ID;
 $usr_entries = array();
 $usr_files = array();
-$usr_dirs = array();
+$usr_dirs = array(); 
 
-$usr_upload_dir = get_template_directory() . '/UserDir/' . $current_user_id;
 
-if ( file_exists( get_template_directory() . '/UserDir/' . $current_user_id ) ) {
 
-    $usr_entries = scandir($usr_upload_dir, 1);
+// var_dump(get_home_url() . '/app/themes/sageqr/UserDir/'. $current_user_id . '/' . $usr_files[$i]); die;
+
+
+
+
+
+// $usr_upload_dir = get_template_directory() . '/UserDir/' . $current_user_id;
+$usr_upload_dir = get_theme_root() . '/sageqr/UserDir/' . $current_user_id; //echo $usr_upload_dir;
+
+if (!is_file($usr_dir) && !is_dir($usr_dir)) {
+    wp_mkdir_p( $usr_upload_dir ); //create the directory
+    chmod( $current_user_id, 0777 ); //make it writable
+    // wp_redirect( home_url() . '/my-documents/' );
+}
+else
+{
+    echo "{$dir} exists and is a valid dir";
+}
+
+// if ( file_exists( get_template_directory() . '/UserDir/' . $current_user_id ) ) {
+if ( file_exists( $usr_upload_dir ) ) {
+
+    $usr_entries = scandir( $usr_upload_dir, 1 );
 }
 
 for ($i=0; $i < count($usr_entries) - 2 ; $i++) {  
@@ -58,14 +79,14 @@ for ($i=0; $i < count($usr_entries) - 2 ; $i++) {
 <div id="page" {{ body_class() }} >
 
 
-<div class="page-bar page_bar" id="page_title_bar" style="display: none;">
+<div class="page-bar page_bar" id="page_title_bar">
     <table class="page-bar-table" style="margin-left: 10px; margin-right: 10px;">
         <tr>
             <td style="width: 20%">
                <h4 class="page_title">{{ the_title() }}</h4>
             </td>
 
-            <td style="width: 80%;"  id="fileaction">
+            <td style="width: 80%; display: none;"  id="fileaction">
                 <div id="files_bar" class="fileaction_icon">
 
 
@@ -77,7 +98,8 @@ for ($i=0; $i < count($usr_entries) - 2 ; $i++) {
                     <span><a href="#" id="rename_btn" data-toggle="tooltip" data-placement="bottom" title="Rename"><i class="far fa-edit icon-note doc_action_icon"></i></a></span>
 
  
-                    <span><a href="javascript:removeFile();" data-toggle="tooltip" data-placement="bottom" title="Remove"><i class="far fa-trash-alt"></i></a></span>
+                    <!-- <span><a href="javascript:removeFile();" id="file_remove" data-toggle="tooltip" data-placement="bottom" title="Remove"><i class="far fa-trash-alt"></i></a></span> -->
+                    <span><a href="javascript:;" id="file_remove" data-toggle="tooltip" data-placement="bottom" title="Remove"><i class="far fa-trash-alt"></i></a></span>
 
 
 <!-- <div id="ajax-posts" class="row">
@@ -156,7 +178,7 @@ for ($i=0; $i < count($usr_entries) - 2 ; $i++) {
             for ($i=0; $i < count($usr_files) ; $i++) { 
         ?>    
         <!-- grid column -->
-        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 card_wrap">
             <!-- .card -->
 
             <div id="card_figure" class="card card-figure">
@@ -167,7 +189,8 @@ for ($i=0; $i < count($usr_entries) - 2 ; $i++) {
 
                         <input type="hidden" name="folder_name" value='<?php echo $usr_files[$i]; ?>'>
                         <?php 
-                            echo '<a href="#" class="fig_img" onclick="fileActions()"><img src="'. get_template_directory_uri() . '/UserDir/'. $current_user_id . '/' . $usr_files[$i] . '" class="current"></a>';
+                            // echo '<a href="#" class="fig_img" onclick="fileActions()"><img data-usr="'.$current_user_id.'" data-src="'.$usr_files[$i].'" src="'. get_template_directory_uri() . '/UserDir/'. $current_user_id . '/' . $usr_files[$i] . '" class="current" id="img_' . $i . '"></a>';
+                            echo '<a href="#" class="fig_img" onclick="fileActions()"><img data-usr="'.$current_user_id.'" data-src="'.$usr_files[$i].'" src="'. get_home_url() . '/app/themes/sageqr/UserDir/'. $current_user_id . '/' . $usr_files[$i] . '" class="current" id="img_' . $i . '"></a>';
                         ?>
                     </div>
                     <!-- /.figure-img -->
@@ -229,6 +252,33 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     {
         echo "{$folder} exists and is a valid folder";
     }
+
+
+$path = $_POST['path'];
+echo $path;
+$return_text = 0;
+
+unlink('http://test5.local/app/themes/sageqr/resources/UserDir/14/2_Contacts.jpg');
+unlink('../UserDir/14/2_Contacts.jpg');
+
+// Check file exist or not
+if( file_exists($path) ){
+
+  // Remove file 
+  unlink($path);
+
+  // Set status
+  $return_text = 1;
+}else{
+
+  // Set status
+  $return_text = 0;
+}
+
+// Return status
+echo $return_text;
+
+
 }
 
 ?>
@@ -283,7 +333,8 @@ $('input[type=file]').on('change', function(){
 <script>
     function fileActions() {
 
-        var x = document.getElementById("page_title_bar"); 
+        // var x = document.getElementById("page_title_bar"); 
+        var x = document.getElementById("fileaction"); 
         if (x.style.display === "none") {
             x.style.display = "block";         
         }
@@ -314,7 +365,7 @@ $('input[type=file]').on('change', function(){
 //   removeFile( $(this).attr('id') );
 // });
 
-function removeFile(id){
+/*function removeFile(id){
     alert("File will be remove! Are you sure?");
 
 
@@ -333,7 +384,14 @@ var file; // переменная. будет содержать данные ф
     data.append( 'file_to_remove', 1 );
     // AJAX запрос
     jQuery.ajax({
-        url         : './inc/ajax-remove.php',
+        // url         : "<?php //get_template_directory_uri('/inc/ajax-remove.php') ?>",
+        // url         : '/app/themes/sageqr/resources/views/inc/file_remove.php',
+        // url         : '<?php //get_template_directory() ?>' + 'inc/file-remove.php',
+        // url         : 'http://test5.local/web/app/themes/sageqr/resources/views/inc/file-remove.php',
+        // url         : '/app/themes/sageqr/resources/views/inc/file_remove.php',
+        // url         : '../file_remove.php',
+        // url         : '//var/www/test5.local/public_html/bedrock/web/app/themes/sageqr/resources/views/inc/file_remove.php', // WORKING!!!
+        url         : '../inc/file_remove.php',
         type        : 'POST',
         data        : data,
         cache       : false,
@@ -370,14 +428,7 @@ var file; // переменная. будет содержать данные ф
         }
 
     });
-
-    // jQuery.ajax({
-    //     url: 'deletefile.php?fileid='+id,
-    //     success: function() {
-    //         alert('File deleted.');
-    //     }
-    // });
-}
+}*/
 </script>
 
 <script>
@@ -455,6 +506,69 @@ $('#remove_btn').on('change', function(){
 
 })(jQuery)
 </script>
+
+<script>
+jQuery(document).ready(function(){
+
+  // Delete
+  jQuery('#file_remove').click(function(){
+    var id = this.id;
+    var split_id = id.split("_"); //console.log(split_id);
+
+    jQuery('figure').each(function(i,elem) {
+    if (jQuery(this).hasClass("active")) {
+        // alert("Остановлено на " + i + "-м пункте списка.");
+        alert('This file will be removed!'+'Are you sure?')
+        var imgElement_src = jQuery( '.figure.active #img_'+i ).attr("src");
+        var imgFile_src = jQuery( '.figure.active #img_'+i ).attr("data-src");
+        var curUser_src = jQuery( '.figure.active #img_'+i ).attr("data-usr");
+        console.log(imgElement_src);
+        var data = {
+            action: 'myajax-submit',
+            nonce_code : the_ajax_script.nonce,
+            path: imgElement_src,
+            fileName: imgFile_src,
+            currentUser: curUser_src
+        };
+        jQuery.post( the_ajax_script.myajaxurl, data, function(response) {
+            console.log(split_id);
+            console.log('Response: '+response);
+            // Changing image source when remove
+            if(response){
+              // jQuery("#img_" + split_id[1]).attr("src","images/noimage.png");
+              // jQuery('.card_wrap').hasClass('active').remove().hasClass('active');
+              jQuery('figure.active').parents().eq(1).remove();
+              location.reload();
+            } else alert('ERROR: You cannot remove this file');
+          
+        });    
+        // return false;
+    } else {
+        // alert(i + ': ' + jQuery(elem).text());
+    }
+});    
+
+    // Selecting image source
+    // var imgElement_src = jQuery( '#img_'+split_id[1] ).attr("src");
+    // var imgElement_src = jQuery( '.figure.active #img_'+i ).attr("src");
+    // console.log(imgElement_src);
+    // AJAX request
+    // jQuery.ajax({
+    //   url: 'fileremove.php',
+    //   type: 'post',
+    //   data: {path: imgElement_src},
+    //   success: function(response){
+ 
+    //     // Changing image source when remove
+    //     if(response == 1){
+    //       jQuery("#img_" + split_id[1]).attr("src","images/noimage.png");
+    //     }
+    //   }
+    // });
+  });
+});    
+</script>
+
 
 
 @endsection

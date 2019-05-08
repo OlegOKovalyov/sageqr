@@ -98,39 +98,138 @@ Container::getInstance()
 function js_enqueue_scripts() {
     wp_enqueue_script ("my-ajax-handle", get_stylesheet_directory_uri() . "/assets/scripts/ajax-remove.js", array('jquery')); 
     //the_ajax_script will use to print admin-ajaxurl in custom ajax.js
-    wp_localize_script('my-ajax-handle', 'the_ajax_script', array('ajaxurl' => admin_url('admin-ajax.php')));
+    wp_localize_script('my-ajax-handle', 'the_ajax_script',
+        array(
+            'myajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('myajax-nonce'),
+        ));
+
+    // wp_localize_script( 
+    //     'jsforwp-frontend-js',
+    //     'jsforwp_globals',
+    //     [
+    //         'ajax_url'  => admin_url( 'admin-ajax.php'),
+    //         'nonce'     => wp_create_nonce( 'nonce_name')
+    //     ]
+    // );    
 } 
 add_action("wp_enqueue_scripts", "js_enqueue_scripts");
 
-function more_post_ajax() {
-  
-    $ppp = (isset($_POST["ppp"])) ? $_POST["ppp"] : 1;
-    $page = (isset($_POST['pageNumber'])) ? $_POST['pageNumber'] : 0;
-  
-    header("Content-Type: text/html");
-  
-    $args = array(
-        'suppress_filters' => true,
-        'post_type' => 'post',
-        'posts_per_page' => $ppp,
-        'paged' => $page,
-    );
-  
-    $loop = new WP_Query($args);
-  
-    $out = '';
-  
-    if ($loop->have_posts()) : while ($loop->have_posts()) : $loop->the_post();
-            $out .= '
-            <div class="small-12 large-4 columns"><h1>' . get_the_title() . '</h1>' . get_the_content() . '</div>';
-        endwhile;
-    endif;
-    wp_reset_postdata();
-    die($out);
+
+
+// add_action( 'wp_enqueue_scripts', 'myajax_data', 99 );
+// function myajax_data(){
+
+//     wp_localize_script('sage-script', 'myajax', 
+//         array(
+//             'url' => admin_url('admin-ajax.php'),
+//             'nonce' => wp_create_nonce('myajax-nonce')
+//         )
+//     );  
+
+// }
+
+
+
+add_action( 'wp_ajax_nopriv_myajax-submit', 'myajax_submit' );
+add_action( 'wp_ajax_myajax-submit', 'myajax_submit' );
+
+function myajax_submit(){
+
+    
+    $path = $_POST['path'];
+    echo $path . '<br>';
+    $fileName = $_POST['fileName'];
+    echo $fileName . '<br>';
+    $currentUser = $_POST['currentUser'];
+    echo $currentUser . '<br>';
+    var_dump(getcwd()); echo '<br>';
+    
+    // var_dump( getcwd() . '../../app/themes/sageqr/resources/UserDir/' . $currentUser . '/' . $fileName ); echo '<br>';
+    // var_dump( get_theme_root() . '/sageqr/resources/UserDir/' . $currentUser . '/' . $fileName );
+    var_dump( get_theme_root() . '/sageqr/UserDir/' . $currentUser . '/' . $fileName );
+    echo '<br>';
+    // die;
+    // проверяем nonce код, если проверка не пройдена прерываем обработку
+
+    // echo 'test';
+    check_ajax_referer( 'myajax-nonce', 'nonce_code' );
+
+    // текущий пользователь не имеет права автора или выше
+    // if( ! current_user_can('subscriber') ) 
+    //     die('Этот запрос доступен пользователям с правом автора или выше.');
+
+    // ОК. У юзера есть нужные права!
+    // $path = $_POST['path'];
+    // echo $path . '<br>'; 
+    $return_text = 0;
+    // $abs_path =  getcwd() . '/../../app/themes/sageqr/resources/UserDir/' . $currentUser . '/' . $fileName;
+    // $abs_path =  get_theme_root() . 'sageqr/resources/UserDir/' . $currentUser . '/' . $fileName;
+    $abs_path =  get_theme_root() . '/sageqr/UserDir/' . $currentUser . '/' . $fileName;
+
+unlink($abs_path);
+    // Check file exist or not
+    if( file_exists($path) ){
+
+      // Remove file 
+      // unlink($path);
+      unlink($abs_path);
+      // wp_delete_file( $abs_path );
+
+
+      // Set status
+      $return_text = 1;
+
+    } else {
+
+      // Set status
+      $return_text = 0;
+    }
+
+    // Return status
+    echo $return_text;
+    // Делаем что нужно и выводим данные на экран, чтобы вернуть их скрипту
+exit;
+    // Не забываем выходить
+    wp_die();
 }
+
+
+// if( wp_doing_ajax() ){
+//     add_action('wp_ajax_myaction', 'ajax_handler');
+//     add_action('wp_ajax_nopriv_myaction', 'ajax_handler');
+// }
+
+
+// function more_post_ajax() {
   
-add_action('wp_ajax_nopriv_more_post_ajax', 'more_post_ajax');
-add_action('wp_ajax_more_post_ajax', 'more_post_ajax');
+//     $ppp = (isset($_POST["ppp"])) ? $_POST["ppp"] : 1;
+//     $page = (isset($_POST['pageNumber'])) ? $_POST['pageNumber'] : 0;
+  
+//     header("Content-Type: text/html");
+  
+//     $args = array(
+//         'suppress_filters' => true,
+//         'post_type' => 'post',
+//         'posts_per_page' => $ppp,
+//         'paged' => $page,
+//     );
+  
+//     $loop = new WP_Query($args);
+  
+//     $out = '';
+  
+//     if ($loop->have_posts()) : while ($loop->have_posts()) : $loop->the_post();
+//             $out .= '
+//             <div class="small-12 large-4 columns"><h1>' . get_the_title() . '</h1>' . get_the_content() . '</div>';
+//         endwhile;
+//     endif;
+//     wp_reset_postdata();
+//     die($out);
+// }
+  
+// add_action('wp_ajax_nopriv_more_post_ajax', 'more_post_ajax');
+// add_action('wp_ajax_more_post_ajax', 'more_post_ajax');
 
 
 
@@ -142,50 +241,25 @@ add_action('wp_ajax_more_post_ajax', 'more_post_ajax');
 // } 
 // add_action("wp_enqueue_scripts", "js_rm_enqueue_scripts");
 
-function file_remove_ajax() {
+// function file_remove_ajax() {
 
-    global $user_ID; echo $user_ID;
+//     global $user_ID; echo $user_ID;
 
-    global $post;
-    $current_user = wp_get_current_user();
-    $current_user_id = $current_user->ID;
+//     global $post;
+//     $current_user = wp_get_current_user();
+//     $current_user_id = $current_user->ID;
 
-    $usr_upload_dir = get_template_directory() . '/UserDir/' . $current_user_id;
+//     $usr_upload_dir = get_template_directory() . '/UserDir/' . $current_user_id;
 
 
 
-    $filename = 'full absolute file path';
-    if(file_exists($filename)) {
-        @chmod($filename, 0777);
-        @unlink($filename);
-        return true;
-    }
-
+//     $filename = 'full absolute file path';
+//     if(file_exists($filename)) {
+//         @chmod($filename, 0777);
+//         @unlink($filename);
+//         return true;
+//     }
+// }
   
-    // $ppp = (isset($_POST["ppp"])) ? $_POST["ppp"] : 1;
-    // $page = (isset($_POST['pageNumber'])) ? $_POST['pageNumber'] : 0;
-  
-    // header("Content-Type: text/html");
-  
-    // $args = array(
-    //     'suppress_filters' => true,
-    //     'post_type' => 'post',
-    //     'posts_per_page' => $ppp,
-    //     'paged' => $page,
-    // );
-  
-    // $loop = new WP_Query($args);
-  
-    // $out = '';
-  
-    // if ($loop->have_posts()) : while ($loop->have_posts()) : $loop->the_post();
-    //         $out .= '
-    //         <div class="small-12 large-4 columns"><h1>' . get_the_title() . '</h1>' . get_the_content() . '</div>';
-    //     endwhile;
-    // endif;
-    // wp_reset_postdata();
-    // die($out);
-}
-  
-add_action('wp_ajax_nopriv_more_post_ajax', 'file_remove_ajax');
-add_action('wp_ajax_more_post_ajax', 'file_remove_ajax');
+// add_action('wp_ajax_nopriv_file_remove_ajax', 'file_remove_ajax');
+// add_action('wp_ajax_more_file_remove_ajax', 'file_remove_ajax');
