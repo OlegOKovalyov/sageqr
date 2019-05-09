@@ -26,7 +26,8 @@ if( !in_array( $new_file_mime, get_allowed_mime_types() ) )
  
 while( file_exists( $new_file_path ) ) {
     $i++;
-    $new_file_path = $usr_upload_dir . '/' . $i . '_' . $profilepicture['name']; echo $new_file_path;
+    //$new_file_path = $usr_upload_dir . '/' . $i . '_' . $profilepicture['name']; //echo $new_file_path;
+    $new_file_path = $usr_upload_dir . '/'. $profilepicture['name'] . ' (' . $i . ')' ; //echo $new_file_path;
 }
  
 // looks like everything is OK

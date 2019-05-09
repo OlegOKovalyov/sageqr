@@ -96,47 +96,20 @@ Container::getInstance()
  * My AJAX Functions
  */
 function js_enqueue_scripts() {
-    wp_enqueue_script ("my-ajax-handle", get_stylesheet_directory_uri() . "/assets/scripts/ajax-remove.js", array('jquery')); 
+    wp_enqueue_script ("my-ajax-handle", get_stylesheet_directory_uri() . "/assets/scripts/myajax.js", array('jquery')); 
     //the_ajax_script will use to print admin-ajaxurl in custom ajax.js
     wp_localize_script('my-ajax-handle', 'the_ajax_script',
         array(
             'myajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('myajax-nonce'),
         ));
-
-    // wp_localize_script( 
-    //     'jsforwp-frontend-js',
-    //     'jsforwp_globals',
-    //     [
-    //         'ajax_url'  => admin_url( 'admin-ajax.php'),
-    //         'nonce'     => wp_create_nonce( 'nonce_name')
-    //     ]
-    // );    
-} 
+}
 add_action("wp_enqueue_scripts", "js_enqueue_scripts");
 
 
-
-// add_action( 'wp_enqueue_scripts', 'myajax_data', 99 );
-// function myajax_data(){
-
-//     wp_localize_script('sage-script', 'myajax', 
-//         array(
-//             'url' => admin_url('admin-ajax.php'),
-//             'nonce' => wp_create_nonce('myajax-nonce')
-//         )
-//     );  
-
-// }
-
-
-
-add_action( 'wp_ajax_nopriv_myajax-submit', 'myajax_submit' );
-add_action( 'wp_ajax_myajax-submit', 'myajax_submit' );
-
-function myajax_submit(){
-
-    
+add_action( 'wp_ajax_nopriv_myajax-remove', 'myajax_remove' );
+add_action( 'wp_ajax_myajax-remove', 'myajax_remove' );
+function myajax_remove(){
     $path = $_POST['path'];
     echo $path . '<br>';
     $fileName = $_POST['fileName'];
@@ -167,9 +140,9 @@ function myajax_submit(){
     // $abs_path =  get_theme_root() . 'sageqr/resources/UserDir/' . $currentUser . '/' . $fileName;
     $abs_path =  get_theme_root() . '/sageqr/UserDir/' . $currentUser . '/' . $fileName;
 
-unlink($abs_path);
+// unlink($abs_path);
     // Check file exist or not
-    if( file_exists($path) ){
+    if( file_exists($abs_path) ){
 
       // Remove file 
       // unlink($path);
@@ -195,71 +168,97 @@ exit;
 }
 
 
-// if( wp_doing_ajax() ){
-//     add_action('wp_ajax_myaction', 'ajax_handler');
-//     add_action('wp_ajax_nopriv_myaction', 'ajax_handler');
-// }
+add_action( 'wp_ajax_nopriv_myajax-rename', 'myajax_rename' );
+add_action( 'wp_ajax_myajax-rename', 'myajax_rename' );
+function myajax_rename(){
+    $path = $_POST['path'];
+    echo $path . '<br>';
+    $fileName = $_POST['fileName'];
+    echo $fileName . '<br>';
+    $newFileName = $_POST['newFileName'];
+    echo $newFileName . '<br>';    
+    $currentUser = $_POST['currentUser'];
+    echo $currentUser . '<br>';
+    var_dump(getcwd()); echo '<br>';
+
+    var_dump( get_theme_root() . '/sageqr/UserDir/' . $currentUser . '/' . $fileName );
+    echo '<br>';
+    // die;
+    // проверяем nonce код, если проверка не пройдена прерываем обработку
+
+    check_ajax_referer( 'myajax-nonce', 'nonce_code' );
+
+    // текущий пользователь не имеет права автора или выше
+    // if( ! current_user_can('subscriber') ) 
+    //     die('Этот запрос доступен пользователям с правом автора или выше.');
+
+    // ОК. У юзера есть нужные права!
+
+    $return_text = 0;
+
+    $abs_path_old =  get_theme_root() . '/sageqr/UserDir/' . $currentUser . '/' . $fileName;
+    echo $abs_path_old;
+    $abs_path_new =  get_theme_root() . '/sageqr/UserDir/' . $currentUser . '/' . $newFileName;
+    echo $abs_path_new;
+
+    // Check file exist or not
+    if( file_exists($abs_path_old) && ! file_exists($abs_path_new) ){
+
+      // Remove file 
+      // unlink($abs_path);
+      rename($abs_path_old, $abs_path_new);
+
+      // Set status
+      $return_text = 1;
+
+    } else {
+
+      // Set status
+      $return_text = 0;
+    }
+
+    // Return status
+    echo $return_text;
+    // Делаем что нужно и выводим данные на экран, чтобы вернуть их скрипту
+//exit;
+    // Не забываем выходить
+    wp_die();
+}
 
 
-// function more_post_ajax() {
-  
-//     $ppp = (isset($_POST["ppp"])) ? $_POST["ppp"] : 1;
-//     $page = (isset($_POST['pageNumber'])) ? $_POST['pageNumber'] : 0;
-  
-//     header("Content-Type: text/html");
-  
-//     $args = array(
-//         'suppress_filters' => true,
-//         'post_type' => 'post',
-//         'posts_per_page' => $ppp,
-//         'paged' => $page,
-//     );
-  
-//     $loop = new WP_Query($args);
-  
-//     $out = '';
-  
-//     if ($loop->have_posts()) : while ($loop->have_posts()) : $loop->the_post();
-//             $out .= '
-//             <div class="small-12 large-4 columns"><h1>' . get_the_title() . '</h1>' . get_the_content() . '</div>';
-//         endwhile;
-//     endif;
-//     wp_reset_postdata();
-//     die($out);
-// }
-  
-// add_action('wp_ajax_nopriv_more_post_ajax', 'more_post_ajax');
-// add_action('wp_ajax_more_post_ajax', 'more_post_ajax');
+/*add_action( 'wp_ajax_nopriv_myajax-updaterev', 'myajax_updaterev' );
+add_action( 'wp_ajax_myajax-updaterev', 'myajax_updaterev' );
+function myajax_updaterev(){
 
+    $user_ID = $_POST['user_id']; echo $user_ID;
+    $usr_upload_dir = $_POST['usr_upload_dir']; echo $usr_upload_dir;
+    var_dump($_POST['my_file_upload']);
+    
+    check_ajax_referer( 'myajax-nonce', 'nonce_code' );
 
+    if( isset( $_POST['my_file_upload'] ) ){  
+        // ВАЖНО! тут должны быть все проверки безопасности передавемых файлов и вывести ошибки если нужно
 
+        //$uploaddir = './uploads'; // . - текущая папка где находится submit.php
+        $uploaddir = get_theme_root() . '/sageqr/UserDir/' . $currentUser . '/'; 
 
-// function js_enqueue_scripts() {
-//     wp_enqueue_script ("rm-ajax-handle", get_stylesheet_directory_uri() . "/assets/scripts/ajax-remove.js", array('jquery')); 
-//     //the_ajax_script will use to print admin-ajaxurl in custom ajax.js
-//     wp_localize_script('rm-ajax-handle', 'rm_ajax_script', array('ajaxurl' =>admin_url('admin-ajax.php')));
-// } 
-// add_action("wp_enqueue_scripts", "js_rm_enqueue_scripts");
+        // cоздадим папку если её нет
+        if( ! is_dir( $uploaddir ) ) mkdir( $uploaddir, 0777 );
 
-// function file_remove_ajax() {
+        $files      = $_FILES; // полученные файлы
+        $done_files = array();
 
-//     global $user_ID; echo $user_ID;
+        // переместим файлы из временной директории в указанную
+        foreach( $files as $file ){
+            $file_name = $file['name'];
 
-//     global $post;
-//     $current_user = wp_get_current_user();
-//     $current_user_id = $current_user->ID;
+            if( move_uploaded_file( $file['tmp_name'], "$uploaddir/$file_name" ) ){
+                $done_files[] = realpath( "$uploaddir/$file_name" );
+            }
+        }
 
-//     $usr_upload_dir = get_template_directory() . '/UserDir/' . $current_user_id;
+        $data = $done_files ? array('files' => $done_files ) : array('error' => 'Ошибка загрузки файлов.');
 
-
-
-//     $filename = 'full absolute file path';
-//     if(file_exists($filename)) {
-//         @chmod($filename, 0777);
-//         @unlink($filename);
-//         return true;
-//     }
-// }
-  
-// add_action('wp_ajax_nopriv_file_remove_ajax', 'file_remove_ajax');
-// add_action('wp_ajax_more_file_remove_ajax', 'file_remove_ajax');
+        die( json_encode( $data ) );
+    }
+}*/
