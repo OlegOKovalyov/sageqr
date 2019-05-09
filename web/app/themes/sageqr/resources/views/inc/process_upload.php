@@ -8,7 +8,7 @@ require_once( dirname(__FILE__) . '/../../../../../../wp/wp-load.php' );
 
 $i = 1; // number of tries when the file with the same name is already exists
  
-$profilepicture = $_FILES['profilepicture']; print_r($profilepicture);
+$profilepicture = $_FILES['profilepicture']; //print_r($profilepicture);
 $new_file_path = $usr_upload_dir . '/' . $profilepicture['name'];
 $new_file_mime = mime_content_type( $profilepicture['tmp_name'] );
  

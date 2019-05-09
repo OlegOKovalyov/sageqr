@@ -108,8 +108,10 @@ require_once( get_template_directory() . '/views/modals/renfile.php' );
     <input type="file" name="my_file_upload" multiple="multiple" accept=".txt, image/*">
         <a href="#" class="upload_files_btn button">Загрузить файлы</a>
      <div class="ajax-reply"></div>
-    <!-- <input type="hidden" name="user_id" value='<?php echo $user_ID; ?>'>
-    <input type="hidden" name="usr_upload_dir" value='<?php echo $usr_upload_dir; ?>'>   -->   
+    <input type="hidden" name="user_id" value='<?php echo $user_ID; ?>'>
+    <input type="hidden" name="current_user_id" value='<?php echo  $current_user_id; ?>'>
+    <input type="hidden" name="usr_upload_dir" value='<?php echo $usr_upload_dir; ?>'> 
+    <?php echo $user_ID . ' ' . $usr_upload_dir; ?>    
 </form>
 
 
@@ -189,7 +191,7 @@ require_once( get_template_directory() . '/views/modals/renfile.php' );
 <!-- ============================================================== -->
 <!-- main wrapper -->
 <!-- ============================================================== -->
-
+<?php //phpinfo() ?>
 
 <?php
 /**
@@ -284,12 +286,46 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 </script>
 
 <script>
-    var files; // переменная. будет содержать данные файлов
 
-    // заполняем переменную данными, при изменении значения поля file 
-    jQuery('input[type=file]').on('change', function(){
-        files = this.files;
-    });
+jQuery('figure').each(function(i,elem) {
+if (jQuery(this).hasClass("active")) {
+    var imgElement_src = jQuery( '.figure.active #img_'+i ).attr("src");
+    var imgFile_src = jQuery( '.figure.active #img_'+i ).attr("data-src");
+    var curUser_src = jQuery( '.figure.active #img_'+i ).attr("data-usr");
+    console.log(imgElement_src);
+    jQuery( '[name="update_rev"]' ).attr('value', imgFile_src);
+    event.preventDefault();
+
+    var data = {
+        action: 'myajax-rename',
+        nonce_code : the_ajax_script.nonce,
+        path: imgElement_src,
+        fileName: imgFile_src,
+        // newFileName: newFileName_src,
+        currentUser: curUser_src
+    };
+            
+    console.log(data);
+
+    return false;
+
+} else {
+    // alert(i + ': ' + jQuery(elem).text());
+}
+
+});
+
+
+
+
+
+var files; // переменная. будет содержать данные файлов
+
+// заполняем переменную данными, при изменении значения поля file 
+jQuery('input[type=file]').on('change', function(){
+    files = this.files;
+    console.log(files);
+});
 
 
 // обработка и отправка AJAX запроса при клике на кнопку upload_files
@@ -311,6 +347,8 @@ jQuery('.upload_files_btn').on( 'click', function( event ){
 
     // добавим переменную для идентификации запроса
     data.append( 'my_file_upload', 1 );
+    data.append( 'user_id', <?php echo get_current_user_id(); ?> );
+    // data.append( fileName, imgFile_src);
 
     // AJAX запрос
     $.ajax({
@@ -318,8 +356,8 @@ jQuery('.upload_files_btn').on( 'click', function( event ){
         // nonce_code : the_ajax_script.nonce,        
         // url         : '/app/themes/sageqr/resources/views/inc/revision_uload.php',
         // url         : 'http://test5.local/app/themes/sageqr/resources/views/inc/revision_upload.php',
+        // url         : 'inc/revision_upload.php',        
         url         : "<?php home_url() ?>"+'/app/themes/sageqr/resources/views/inc/revision_upload.php',
-        // url         : 'inc/revision_upload.php',
         type        : 'POST', // важно!
         data        : data,
         cache       : false,
@@ -341,6 +379,7 @@ jQuery('.upload_files_btn').on( 'click', function( event ){
                 } )
 
                 jQuery('.ajax-reply').html( html );
+                console.log(data.fileName);
             }
             // ошибка
             else {
