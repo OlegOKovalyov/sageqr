@@ -75,7 +75,7 @@ require_once( get_template_directory() . '/views/modals/renfile.php' );
                 <td style="width: 80%; display: none;"  id="fileaction">
                     <div id="files_bar" class="fileaction_icon">
 
-                        <span><a href="javascript:;" id="favourite_btn" data-toggle="tooltip" data-placement="bottom" title="Add star"><i class="far fa-star icon-star doc_action_icon"></i></a></span>                    
+                        <span><a href="javascript:;" id="favourite_btn" data-toggle="tooltip" data-placement="bottom" title="Add star"><i class="far fa-star icon-star"></i></a></span>                    
 
                         <span><a href="#" id="share_btn" data-toggle="tooltip" data-placement="bottom" title="Share"><i class="fas fa-user-plus"></i></a></span>
 
@@ -335,6 +335,15 @@ var files; // переменная. будет содержать данные �
     });
 
 });    
+</script>
+
+<script>
+    //ACTION: Add Star File AJAX Action
+    var $ = jQuery;
+    $(document).on("click", "#favourite_btn", function(){
+      alert("The Add Star was clicked.");
+      $('#files_bar span:first-child a').html('<i class="fas fa-splotch">');
+    });
 </script>
 
 

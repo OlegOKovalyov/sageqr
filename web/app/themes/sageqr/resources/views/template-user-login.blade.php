@@ -231,4 +231,19 @@ if(isset($pay_load)){
 <!-- ============================================================== -->
 <!-- signin form  -->
 <!-- ============================================================== -->
+
+<script>
+    // Плавное появление страниц на экране
+    // $(document).ready(function(){
+    //     setTimeout(function () {
+    //         $("body").addClass("active");
+    //     }, 1000);
+    //     $('body').fadeIn(1500); 
+    //     $('.template-user-login').fadeIn(600);
+    //     $('.template-user-register').fadeIn(600);
+    //     $('.template-user-lost-password').fadeIn(600);
+    // });    
+</script>    
+
+
 @endsection
