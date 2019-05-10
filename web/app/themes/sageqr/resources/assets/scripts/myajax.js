@@ -2,25 +2,27 @@
  * File Bar Actions
  */
  var $ = jQuery;
-jQuery(document).ready(function(){
+$(document).ready(function(){
 
     // File myajax.js connection control
-    jQuery('#share_btn').click(function(){
+    $('#share_btn').click(function(){
         alert('Share Button clicked!')
     });
 
+
+
   // ACTION: Remove File AJAX Action
-  jQuery('#file_remove').click(function(){
+  $('#file_remove').click(function(){
     var id = this.id;
     var split_id = id.split("_");
 
-    jQuery('figure').each(function(i,elem) {
-    if (jQuery(this).hasClass("active")) {
+    $('figure').each(function(i,elem) {
+    if ($(this).hasClass("active")) {
         // alert("Остановлено на " + i + "-м пункте списка.");
         alert('This file will be removed! '+'Are you sure?')
-        var imgElement_src = jQuery( '.figure.active #img_'+i ).attr("src");
-        var imgFile_src = jQuery( '.figure.active #img_'+i ).attr("data-src");
-        var curUser_src = jQuery( '.figure.active #img_'+i ).attr("data-usr");
+        var imgElement_src = $( '.figure.active #img_'+i ).attr("src");
+        var imgFile_src = $( '.figure.active #img_'+i ).attr("data-src");
+        var curUser_src = $( '.figure.active #img_'+i ).attr("data-usr");
         console.log(imgElement_src);
         var data = {
             action: 'myajax-remove',
@@ -29,20 +31,20 @@ jQuery(document).ready(function(){
             fileName: imgFile_src,
             currentUser: curUser_src
         };
-        jQuery.post( the_ajax_script.myajaxurl, data, function(response) {
+        $.post( the_ajax_script.myajaxurl, data, function(response) {
             console.log(split_id);
             console.log('Response: '+response);
             // Changing image source when remove
             if(response){
-              // jQuery("#img_" + split_id[1]).attr("src","images/noimage.png");
-              jQuery('figure.active').parents().eq(1).remove();
+              // $("#img_" + split_id[1]).attr("src","images/noimage.png");
+              $('figure.active').parents().eq(1).remove();
               // location.reload();
             } else alert('ERROR: You cannot remove this file');
           
         });    
         // return false;
     } else {
-        // alert(i + ': ' + jQuery(elem).text());
+        // alert(i + ': ' + $(elem).text());
     }
     });    
 
@@ -51,26 +53,26 @@ jQuery(document).ready(function(){
 
 
     // ACTION: Rename File AJAX Action
-    jQuery('#file_rename').click(function (event) {
-        jQuery('#renFileModal').modal('show');
+    $('#file_rename').click(function (event) {
+        $('#renFileModal').modal('show');
         console.log('test');
         var id = this.id;
         var split_id = id.split("_");
 
-        jQuery('figure').each(function(i,elem) {
-        if (jQuery(this).hasClass("active")) {
+        $('figure').each(function(i,elem) {
+        if ($(this).hasClass("active")) {
             // alert("Остановлено на " + i + "-м пункте списка.");
             // alert('This file will be renamed! '+'Are you sure?');
-            var imgElement_src = jQuery( '.figure.active #img_'+i ).attr("src");
-            var imgFile_src = jQuery( '.figure.active #img_'+i ).attr("data-src");
-            var curUser_src = jQuery( '.figure.active #img_'+i ).attr("data-usr");
+            var imgElement_src = $( '.figure.active #img_'+i ).attr("src");
+            var imgFile_src = $( '.figure.active #img_'+i ).attr("data-src");
+            var curUser_src = $( '.figure.active #img_'+i ).attr("data-usr");
             console.log(imgElement_src);
-            jQuery( '[name="renfile"]' ).attr('value', imgFile_src);
-            jQuery( '[name="renfile"]' ).change(function() {
+            $( '[name="renfile"]' ).attr('value', imgFile_src);
+            $( '[name="renfile"]' ).change(function() {
                 // alert( "Handler for .change() called." );
-                var newFileName_src = jQuery( '[name="renfile"]' ).attr('value');
+                var newFileName_src = $( '[name="renfile"]' ).attr('value');
                 console.log(newFileName_src);
-                jQuery( "#renFileModal" ).submit(function( event ) {
+                $( "#renFileModal" ).submit(function( event ) {
                     // alert( "Handler for .submit() called." );
                     event.preventDefault();
 
@@ -83,34 +85,34 @@ jQuery(document).ready(function(){
                         currentUser: curUser_src
                     };
 
-                    jQuery.post( the_ajax_script.myajaxurl, data, function(response) {
+                    $.post( the_ajax_script.myajaxurl, data, function(response) {
                         console.log(split_id);
                         console.log('Response: '+response);
                         // Changing image source when remove
                         if(response){
-                          // jQuery("#img_" + split_id[1]).attr("src","images/noimage.png");
-                          // jQuery('figure.active').parents().eq(1).remove();
+                          // $("#img_" + split_id[1]).attr("src","images/noimage.png");
+                          // $('figure.active').parents().eq(1).remove();
                           // alert('Server response received!')
                           // location.reload();+
                           console.log(data);
-                          // jQuery('figure.active .figure-caption li').empty();
-                          jQuery('figure.active .figure-caption .list-inline-item span:last-child').text(newFileName_src);
-                          // jQuery('figure.active .figure-caption li').replaceWith(data.newFileName);
-                          // jQuery('figure.active .figure-caption .list-inline-item').replaceWith(jQuery('figure.active .figure-caption .list-inline-item', jQuery(newFileName)));
-                          // jQuery('figure.active .figure-caption .list-inline-item').replaceWith(newFileName);
-                          // jQuery('figure.active .figure-caption .list-inline-item').replaceWith(data[newFileName]);
-                          // jQuery('#renFileModal').modal('hide');
+                          // $('figure.active .figure-caption li').empty();
+                          $('figure.active .figure-caption .list-inline-item span:last-child').text(newFileName_src);
+                          // $('figure.active .figure-caption li').replaceWith(data.newFileName);
+                          // $('figure.active .figure-caption .list-inline-item').replaceWith($('figure.active .figure-caption .list-inline-item', $(newFileName)));
+                          // $('figure.active .figure-caption .list-inline-item').replaceWith(newFileName);
+                          // $('figure.active .figure-caption .list-inline-item').replaceWith(data[newFileName]);
+                          // $('#renFileModal').modal('hide');
                         } else alert('ERROR: You cannot remove this file');
                       
                     });                    
-                jQuery('#renFileModal').modal('hide');
+                $('#renFileModal').modal('hide');
                 });                
             });            
 
             return false;
         
         } else {
-            // alert(i + ': ' + jQuery(elem).text());
+            // alert(i + ': ' + $(elem).text());
         }
 
         });
@@ -118,51 +120,9 @@ jQuery(document).ready(function(){
     });  
 
 
-// ACTION: Update Revision File AJAX Action
-// jQuery('#update_rev').click(function (event) {
-jQuery('.upload_files_btn2').click(function (event) {
-    jQuery('figure').each(function(i,elem) {
-    if (jQuery(this).hasClass("active")) {
-        var imgElement_src = jQuery( '.figure.active #img_'+i ).attr("src");
-        var imgFile_src = jQuery( '.figure.active #img_'+i ).attr("data-src");
-        var curUser_src = jQuery( '.figure.active #img_'+i ).attr("data-usr");
-        console.log(imgElement_src);
-        jQuery( '[name="update_rev"]' ).attr('value', imgFile_src);
-        event.preventDefault();
-
-        var data = {
-            action: 'myajax-updaterev',
-            nonce_code : the_ajax_script.nonce,
-            path: imgElement_src,
-            fileName: imgFile_src,
-            // newFileName: newFileName_src,
-            currentUser: curUser_src
-        };
-                
-        jQuery.post( the_ajax_script.myajaxurl, data, function(response) {
-
-            console.log('Response: '+response);
-            // Changing image source when remove
-            if(response){
-              // jQuery("#img_" + split_id[1]).attr("src","images/noimage.png");
-              jQuery('figure.active').parents().eq(1).remove();
-              // location.reload();
-            } else alert('ERROR: You cannot remove this file');
-          
-        }); 
-
-        return false;
-
-    } else {
-        // alert(i + ': ' + jQuery(elem).text());
-    }
-
-    });
- 
-});
 
 
 
 
 
-}); // jQuery(document).ready(function()   
+}); // $(document).ready(function() close curls! 

@@ -6,10 +6,8 @@
 
 <?php
 require($_SERVER["DOCUMENT_ROOT"]."/wp/wp-load.php");
-// require_once( get_template_directory() . '/views/modals/newfolder.php' );
-// require_once( get_template_directory() . '/views/modals/renfile.php' );
 
-global $user_ID; //echo $user_ID;
+global $user_ID;
 if( !$user_ID ) {
     header('location:' . site_url() . '/login/');
     exit;
@@ -77,7 +75,6 @@ require_once( get_template_directory() . '/views/modals/renfile.php' );
                 <td style="width: 80%; display: none;"  id="fileaction">
                     <div id="files_bar" class="fileaction_icon">
 
-
                         <span><a href="javascript:;" id="favourite_btn" data-toggle="tooltip" data-placement="bottom" title="Add star"><i class="far fa-star icon-star doc_action_icon"></i></a></span>                    
 
                         <span><a href="#" id="share_btn" data-toggle="tooltip" data-placement="bottom" title="Share"><i class="fas fa-user-plus"></i></a></span>
@@ -88,60 +85,15 @@ require_once( get_template_directory() . '/views/modals/renfile.php' );
 
                         <span><a href="javascript:;"  id="view_btn" data-toggle="tooltip" data-placement="bottom" title="Preview"><i class="far fa-eye icon-eye"></i></a></span>
 
-                        <span><a href="#" id="update_rev2" data-toggle="tooltip" data-placement="bottom" title="Update revision"><i class="fas fa-cloud-upload-alt"></i></a></span>
-
-<!-- <li class="nav-item fileinput-button"> -->
-<!--     <form id="upload-form" action="<?php echo get_template_directory_uri() ?>/views/inc/revision_upload.php" method="post" enctype="multipart/form-data">
-        <label class="nav-link">
-            <i class="fas fa-cloud-upload-alt"></i> File<input id="file" type="file" style="display: none;" name="profilepicture" onchange="form.submit()" />
-            <span><a href="#" id="update_rev" data-toggle="tooltip" data-placement="bottom" title="Update revision"><i class="fas fa-cloud-upload-alt"><input id="file" type="file" style="display: none;" name="profilepicture" onchange="form.submit()" /></i></a></span>
-        </label>
-        <input type="hidden" name="user_id" value='<?php echo $user_ID; ?>'>
-        <input type="hidden" name="usr_upload_dir" value='<?php echo $usr_upload_dir; ?>'>
-    </form>  -->                                           
-<!-- </li>      -->
-
-
-
-
-<form>
-    <input type="file" name="my_file_upload" multiple="multiple" accept=".txt, image/*">
-        <a href="#" class="upload_files_btn button">Загрузить файлы</a>
-     <div class="ajax-reply"></div>
-</form>
-
-
-<!-- <form id="form1" runat="server">
-  <input type='file' id="imgInp" />
-  <img id="blah" src="#" alt="your image" />
-</form> -->
-
-
-<!-- <form id="upload-form" action="<?php echo get_template_directory_uri() ?>/views/inc/revision_upload.php" method="post" enctype="multipart/form-data"> -->
-<form id="upload-form1" action="" method="post" enctype="multipart/form-data" runat="server">
-<!-- <form> -->
-    <label class="nav-link">
-        <!-- <a href="#" id="update_rev" class="upload_files_btn"></a><i class="fas fa-cloud-upload-alt"></i> File<input id="updaterev_file" type="file" style="display: none;" name="my_file_upload" onchange="form.submit()" /> -->
-        <a href="#" id="update_rev" class="upload_files_btn"></a><i class="fas fa-cloud-upload-alt"></i> File<input id="updaterev_file" type="file" style="display: none;" name="my_file_upload" onchange="form.submit()" />
-        <div class="ajax-reply"></div>
-        <!-- <img id="blah" src="#" alt="your image" /> -->
-    </label>
-    <!-- <input type="hidden" name="user_id" value='<?php echo $user_ID; ?>'>
-    <input type="hidden" name="usr_upload_dir" value='<?php echo $usr_upload_dir; ?>'> -->
-</form>  
-
-
-<!-- <form id="upload-form" action="<?php echo get_template_directory_uri() ?>/views/inc/process_upload.php" method="post" enctype="multipart/form-data">
-    <label class="nav-link">
-        <i class="fas fa-cloud-upload-alt"></i> File<input id="file" type="file" style="display: none;" name="profilepicture" onchange="form.submit()" />
-    </label>
-    <input type="hidden" name="user_id" value='<?php echo $user_ID; ?>'>
-    <input type="hidden" name="usr_upload_dir" value='<?php echo $usr_upload_dir; ?>'>
-</form> -->   
-
-
-
-
+                        <span>
+                            <form id="updaterev-form" action="" method="post" enctype="multipart/form-data" runat="server">
+                                <label for="updaterev_file">
+                                    <input id="updaterev_file" type="file" name="my_file_upload" multiple="multiple" accept=".txt, image/*" style="display: none;" />            
+                                    <i class="fas fa-cloud-upload-alt upload_files_btn button" data-toggle="tooltip" data-placement="bottom" title="Update revision"></i>
+                                </label>
+                                <!-- <div class="ajax-reply"></div> -->
+                            </form>
+                        </span>  
 
                         <span><a href="javascript:void(0)" id="move_btn" data-toggle="tooltip" data-placement="bottom" title="Set expiry"><i class="far fa-clock"></i></a></span>
 
@@ -253,32 +205,6 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
 ?>
 
-
-<!-- New Folder Modal -->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm" role="document">
-
-    <form action="<?= $_SERVER['REQUEST_URI'];?>" method="post">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">New Folder</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-              <input type="text" name="folder" value="Untitle Folder"><br>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Create</button>
-          </div>
-        </div>
-    </form>
-
-  </div>
-</div> -->
-
 <script>
     // Show File Actions in Page Bar
     function fileActions() {
@@ -310,25 +236,52 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     // }      
 </script>
 
+
 <script>
+//ACTION: Update Revision File AJAX Action
+jQuery('#updaterev_file').on( 'change', function( event ){
+
+    $('figure').each(function(i,elem) {
+    if ($(this).hasClass("active")) {
+        var imgElement_src = $( '.figure.active #img_'+i ).attr("src");
+        var imgFile_src = $( '.figure.active #img_'+i ).attr("data-src");
+        var curUser_src = $( '.figure.active #img_'+i ).attr("data-usr");
+        console.log(imgElement_src);
+        var data = {
+            action: 'myajax-remove',
+            nonce_code : the_ajax_script.nonce,
+            path: imgElement_src,
+            fileName: imgFile_src,
+            currentUser: curUser_src
+        };
+        $.post( the_ajax_script.myajaxurl, data, function(response) {
+            console.log('Response: '+response);
+            // Changing image source when remove
+            if(response){
+              $('figure.active').parents().eq(1).remove();
+              // location.reload();
+            } else alert('ERROR: You cannot remove this file');
+          
+        });    
+        // return false;
+    } else {
+        // alert(i + ': ' + $(elem).text());
+    }
+    });    
 
 var files; // переменная. будет содержать данные файлов
 
 // заполняем переменную данными, при изменении значения поля file 
-jQuery('input[type=file]').on('change', function(){
+// jQuery('input[type=file]').on('change', function(){
     files = this.files;
     console.log(files);
-});
-
-
-// обработка и отправка AJAX запроса при клике на кнопку upload_files
-jQuery('.upload_files_btn').on( 'click', function( event ){
+// });
 
     event.stopPropagation(); // остановка всех текущих JS событий
     event.preventDefault();  // остановка дефолтного события для текущего элемента - клик для <a> тега
 
     // ничего не делаем если files пустой
-    if( typeof files == 'undefined' ) return;
+    if( typeof files == 'undefined' ) alert("File not found.");
 
     // создадим объект данных формы
     var data = new FormData();
@@ -345,11 +298,6 @@ jQuery('.upload_files_btn').on( 'click', function( event ){
 
     // AJAX запрос
     $.ajax({
-        // action: 'myajax-updaterev',
-        // nonce_code : the_ajax_script.nonce,        
-        // url         : '/app/themes/sageqr/resources/views/inc/revision_uload.php',
-        // url         : 'http://test5.local/app/themes/sageqr/resources/views/inc/revision_upload.php',
-        // url         : 'inc/revision_upload.php',        
         url         : "<?php home_url() ?>"+'/app/themes/sageqr/resources/views/inc/revision_upload.php',
         type        : 'POST', // важно!
         data        : data,
@@ -389,27 +337,5 @@ jQuery('.upload_files_btn').on( 'click', function( event ){
 });    
 </script>
 
-<script>
-function readURL(input) {
-
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-      $('#blah').attr('src', e.target.result);
-    }
-
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-$("#updaterev_file").change(function() {
-  readURL(this);
-});  
-</script>
-
-
-
 
 @endsection
-

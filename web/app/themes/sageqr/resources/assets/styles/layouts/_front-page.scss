@@ -11,12 +11,13 @@ body {
 
 .dashboard-main-wrapper {
   background-color: rgb(240, 240, 240);
-  height: 96vh;
+  height: 100vh;
   padding-top: 55px;
 
   h4 {
     font-size: 17px;
     font-weight: 700;
+    margin-bottom: 0;
   }
 }
 
@@ -208,6 +209,16 @@ body {
       .fileaction_icon {
         display: flex;
         justify-content: space-around;
+        align-items: center;
+
+        span {
+          color: #525ddc;
+
+          label {
+            color: #525ddc;
+            margin-bottom: 0;
+          }
+        }
       }
     }
   }
@@ -247,6 +258,9 @@ body {
     padding: 0;
 
     .figure {
+      border: 1px solid #dfdfdf;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+
       .figure-attachment {
         a {
           height: 200px;
@@ -260,8 +274,14 @@ body {
       }
 
       .figure-caption {
+        border: none;
         padding: 5px;
         height: 20%;
+        margin-top: 0;
+
+        span:first-child {
+          color: #d4565c;
+        }
       }
 
       &.active {
