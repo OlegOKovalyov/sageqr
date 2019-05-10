@@ -226,7 +226,7 @@ function myajax_rename(){
 }
 
 
-/*add_action( 'wp_ajax_nopriv_myajax-updaterev', 'myajax_updaterev' );
+add_action( 'wp_ajax_nopriv_myajax-updaterev', 'myajax_updaterev' );
 add_action( 'wp_ajax_myajax-updaterev', 'myajax_updaterev' );
 function myajax_updaterev(){
 
@@ -236,7 +236,7 @@ function myajax_updaterev(){
     
     check_ajax_referer( 'myajax-nonce', 'nonce_code' );
 
-    if( isset( $_POST['my_file_upload'] ) ){  
+    /*if( isset( $_POST['my_file_upload'] ) ) {  
         // ВАЖНО! тут должны быть все проверки безопасности передавемых файлов и вывести ошибки если нужно
 
         //$uploaddir = './uploads'; // . - текущая папка где находится submit.php
@@ -260,5 +260,5 @@ function myajax_updaterev(){
         $data = $done_files ? array('files' => $done_files ) : array('error' => 'Ошибка загрузки файлов.');
 
         die( json_encode( $data ) );
-    }
-}*/
+    }*/
+}

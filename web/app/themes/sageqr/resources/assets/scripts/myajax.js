@@ -118,19 +118,51 @@ jQuery(document).ready(function(){
     });  
 
 
+// ACTION: Update Revision File AJAX Action
+// jQuery('#update_rev').click(function (event) {
+jQuery('.upload_files_btn2').click(function (event) {
+    jQuery('figure').each(function(i,elem) {
+    if (jQuery(this).hasClass("active")) {
+        var imgElement_src = jQuery( '.figure.active #img_'+i ).attr("src");
+        var imgFile_src = jQuery( '.figure.active #img_'+i ).attr("data-src");
+        var curUser_src = jQuery( '.figure.active #img_'+i ).attr("data-usr");
+        console.log(imgElement_src);
+        jQuery( '[name="update_rev"]' ).attr('value', imgFile_src);
+        event.preventDefault();
 
-/*var kamaFiles; // переменная. будет содержать данные файлов
+        var data = {
+            action: 'myajax-updaterev',
+            nonce_code : the_ajax_script.nonce,
+            path: imgElement_src,
+            fileName: imgFile_src,
+            // newFileName: newFileName_src,
+            currentUser: curUser_src
+        };
+                
+        jQuery.post( the_ajax_script.myajaxurl, data, function(response) {
 
-// заполняем переменную данными, при изменении значения поля file 
-$('input[type=file]').on('change', function(){
-    kamaFiles = this.kamaFiles;
-    console.log(kamaFiles);
-});*/
+            console.log('Response: '+response);
+            // Changing image source when remove
+            if(response){
+              // jQuery("#img_" + split_id[1]).attr("src","images/noimage.png");
+              jQuery('figure.active').parents().eq(1).remove();
+              // location.reload();
+            } else alert('ERROR: You cannot remove this file');
+          
+        }); 
+
+        return false;
+
+    } else {
+        // alert(i + ': ' + jQuery(elem).text());
+    }
+
+    });
  
+});
 
 
 
 
 
-
-});    
+}); // jQuery(document).ready(function()   
